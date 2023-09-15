@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operaciones aplicando Recursividad</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            text-align: center;
+            background-color: skyblue;
+        }
+
+        h1{
+            background-color: aquamarine;
+            width:400px;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        input[type="number"] {
+            background-color: yellow;
+            width: 20%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: red;
+            color: rgb(0, 0, 0);
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        #resultado {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Operaciones aplicando Recursividad</h1>
+        <label for="operacion">Selecciona una operación:</label>
+        <select id="operacion">
+            <option value="factorial">Factorial</option>
+            <option value="fibonacci">Fibonacci</option>
+            <option value="mcd">MCD (Máximo Común Divisor)</option>
+        </select>
+
+        <div id="numero1" class="form">
+            <label for="valor1">Número 1:</label>
+            <input type="number" id="valor1">
+        </div>
+
+        <div id="numero2" class="form" style="display: none;">
+            <label for="valor2">Número 2:</label>
+            <input type="number" id="valor2">
+        </div>
+
+        <button id="calcular">Calcular</button>
+
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        class Calculadora {
+            calcularFactorial(numero) {
+                if (numero === 0 || numero === 1) {
+                    return 1;
+                } else {
+                    return numero * this.calcularFactorial(numero - 1);
+                }
+            }
+
+            calcularFibonacci(numero) {
+                if (numero <= 1) {
+                    return numero;
+                } else {
+                    return this.calcularFibonacci(numero - 1) + this.calcularFibonacci(numero - 2);
+                }
+            }
+
+            calcularMCD(numero1, numero2) {
+                while (numero2 !== 0) {
+                    let temp = numero2;
+                    numero2 = numero1 % numero2;
+                    numero1 = temp;
+                }
+                return numero1;
+            }
+        }
+
+        const calculadora = new Calculadora();
+
+        document.getElementById("operacion").addEventListener("change", function () {
+            const selectedOperacion = this.value;
+            const numero1 = document.getElementById("numero1");
+            const numero2 = document.getElementById("numero2");
+
+            if (selectedOperacion === "mcd") {
+                numero1.style.display = "block";
+                numero2.style.display = "block";
+            } else {
+                numero1.style.display = "block";
+                numero2.style.display = "none";
+            }
+        });
+
+        document.getElementById("calcular").addEventListener("click", function () {
+            const selectedOperacion = document.getElementById("operacion").value;
+            const valor1 = parseFloat(document.getElementById("valor1").value);
+
+            if (selectedOperacion === "factorial") {
+                const resultado = calculadora.calcularFactorial(valor1);
+                document.getElementById("resultado").innerHTML = `Resultado: ${resultado}`;
+            } else if (selectedOperacion === "fibonacci") {
+                const resultado = calculadora.calcularFibonacci(valor1);
+                document.getElementById("resultado").innerHTML = `Resultado: ${resultado}`;
+            } else if (selectedOperacion === "mcd") {
+                const valor2 = parseFloat(document.getElementById("valor2").value);
+                const resultado = calculadora.calcularMCD(valor1, valor2);
+                document.getElementById("resultado").innerHTML = `MCD: ${resultado}`;
+            }
+        });
+    </script>
+</body>
+</html>
